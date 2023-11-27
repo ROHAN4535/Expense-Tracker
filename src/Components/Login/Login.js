@@ -1,11 +1,13 @@
-import { Fragment, useRef } from "react";
+import { Fragment, useContext ,useRef } from "react";
 import classes from './Login.module.css';
 import { Link, useNavigate } from "react-router-dom";
+import AuthContext from "../../Store/auth-context";
 
 const Login = () => {
   const inputRef = useRef();
   const passwordRef = useRef();
   const navigate = useNavigate();
+  const authCtx = useContext(AuthContext);
   const submiHandler = (event) => {
     event.preventDefault();
 
@@ -37,7 +39,7 @@ const Login = () => {
         }
       })
       .then((data) => {
-        console.log(data.email, data.idToken);
+        authCtx.login(data.idToken);
         alert("User has successfully login.");
         navigate("/welcome", {replace: true})
 
@@ -69,7 +71,7 @@ const Login = () => {
           />
         </div>
 
-        <button type="submit" className={classes.loginBtn}>Login</button>
+        <button type="submit" className={classes.loginbtn}>Login</button>
       </form>
     </section>
     <section className={classes.lowersec}>
