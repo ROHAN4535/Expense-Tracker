@@ -1,11 +1,8 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../../Store/auth-context";
-import UpdateProfile from "./UpdateProfile";
 
 const Profile = () => {
-  const [updateVisible, setUpdateVisible] = useState(false);
-  const [userData, setUserData] = useState(null);
   const authCtx = useContext(AuthContext);
 
   useEffect(() => {
@@ -18,7 +15,7 @@ const Profile = () => {
     }
     try {
       const res = await fetch(
-        "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyDrzCbUU-c9VlbP3aQJnl2D5wFSpyAR3Po", 
+        "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyDrzCbUU-c9VlbP3aQJnl2D5wFSpyAR3Po", // Replace with your API key
         {
           method: "POST",
           body: JSON.stringify({
@@ -28,9 +25,8 @@ const Profile = () => {
             "Content-Type": "application/json",
           },
         }
-      )
-
-    if (res.ok) {
+      );
+      if (res.ok) {
         const data = await res.json();
         console.log(data);
       } else {
@@ -47,8 +43,9 @@ const Profile = () => {
     <div>
       <h1>Welcome to Expense Tracker</h1>
       <span>
-      <h2>Your profile is incomplete.</h2>
-      <Link to="/updateprofile">Complete now.</Link>
+        <h2>Your profile is incomplete.</h2>
+
+        <Link to="/updateprofile">Complete now.</Link>
       </span>
     </div>
   );

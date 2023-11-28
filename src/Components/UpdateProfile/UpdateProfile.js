@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+
 import classes from "./UpdateProfile.module.css";
 
 const UpdateProfile = (props) => {
@@ -6,14 +7,12 @@ const UpdateProfile = (props) => {
   const urlRef = useRef();
   const formRef = useRef();
   const emailRef = useRef();
-
   useEffect(() => {
     if (props.user) {
       nameRef.current.value = props.user.displayName || "";
       emailRef.current.value = props.user.email || "";
     }
   }, [props.user]);
-
   const submitHandler = async (event) => {
     event.preventDefault();
     try {
@@ -30,7 +29,6 @@ const UpdateProfile = (props) => {
           },
         }
       );
-
       if (res.ok) {
         alert("profile updated.");
       } else {
