@@ -1,4 +1,4 @@
-import React, { useContext, useState, Fragment } from "react";
+import React, { useContext, useState, Fragment, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import AuthContext from "../../Store/auth-context";
 import classes from "./Profile.module.css";
@@ -44,22 +44,28 @@ const Profile = () => {
     } catch (error) {
       console.error(error);
     }
-    navigate("/profile", { replace: true });
+    // navigate("/profile", { replace: true });
   };
+  useEffect(()=> {
+    fetchUserData()
+  },[])
 
   // Check if user data is already available in state, if not, fetch it.
   const logoutHandler = () => {
     authCtx.logout();
     navigate("/login", { replace: true });
   };
+  const clickExpenseHandler = () => {
+    navigate('/profile/expensetracker',{replace:true})
+  }
 
   return (
     <Fragment>
       <section className={classes.proCon}>
         <div className={classes.header}>
           <div className={classes.headerDetail}>
-            <p>Welcome to Expense Tracker</p>
-
+            <h6>Welcome to Expense Tracker</h6>
+            <button onClick={clickExpenseHandler}>Expense Tracker</button>
             <span className={classes.incomplete}>
               {/* <h5>Your profile is incomplete.</h5>
 
@@ -71,7 +77,7 @@ const Profile = () => {
                   Your profile <strong>x%</strong> completed.
                 </React.Fragment>
               )}
-              <button onClick={fetchUserData}>Complete now</button>
+              <button onClick={() => navigate('/profile',{replace:true})}>Complete now</button>
             </span>
           </div>
           <div className={classes.logout}>
@@ -81,7 +87,7 @@ const Profile = () => {
           </div>
         </div>
       </section>
-      {isLocation && <UpdateProfile user={userData} />}
+      {isLocation && <UpdateProfile user={userData} update={fetchUserData} />}
     </Fragment>
   );
 };
