@@ -1,47 +1,44 @@
-import { useContext, useEffect, useState } from "react";
+import { useState } from "react";
 import ExpenseContext from "./exp-context";
 import axios from "axios";
-import AuthContext from "./auth-context";
 
 const ExpeseProvider = (props) => {
   const [items, setItems] = useState([]);
   const [editItems, updateEditItems] = useState("");
 
-  const authCtx = useContext(AuthContext);
+  // const fetchItemFromBackend = async () => {
+  //   try {
+  //     if (!authCtx.userEmail) {
+  //       console.log("User email is not available.");
+  //       return;
+  //     }
+  //     const email = authCtx.userEmail.replace(/[.@]/g, "");
+  //     const res = await axios.get(
+  //       `https://expense-tracker-f082a-default-rtdb.firebaseio.com/${email}expenses.json`
+  //     );
 
-  const fetchItemFromBackend = async () => {
-    try {
-      if (!authCtx.userEmail) {
-        console.log("User email is not available.");
-        return;
-      }
-      const email = authCtx.userEmail.replace(/[.@]/g, "");
-      const res = await axios.get(
-        `https://expense-tracker-f082a-default-rtdb.firebaseio.com/${email}expenses.json`
-      );
-
-      if (res.data) {
-        const fetchedItems = Object.values(res.data).map(
-          (entry) => entry.expense
-        );
-        setItems(fetchedItems);
-        // Save fetchedItems to local storage
-        localStorage.setItem("expenses", JSON.stringify(fetchedItems));
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  useEffect(() => {  
-    // Try to retrieve data from local storage on component mount
-    const storedExpenses = JSON.parse(localStorage.getItem("expenses"));
-    if (storedExpenses) {
-      setItems(storedExpenses);
-    } else {
-      // If not available in local storage, fetch from backend
-      fetchItemFromBackend();  
-    }
-  }, []); 
+  //     if (res.data) {
+  //       const fetchedItems = Object.values(res.data).map(
+  //         (entry) => entry.expense
+  //       );
+  //       setItems(fetchedItems);
+  //       // Save fetchedItems to local storage
+  //       localStorage.setItem("expenses", JSON.stringify(fetchedItems));
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
+  // useEffect(() => {  
+  //   // Try to retrieve data from local storage on component mount
+  //   const storedExpenses = JSON.parse(localStorage.getItem("expenses"));
+  //   if (storedExpenses) {
+  //     setItems(storedExpenses);
+  //   } else {
+  //     // If not available in local storage, fetch from backend
+  //     fetchItemFromBackend();  
+  //   }
+  // }, []); 
 
   const addItemHandler = async (item) => {
     try {
@@ -93,7 +90,7 @@ const ExpeseProvider = (props) => {
     items: items,
     addItem: addItemHandler,
     deleteItem: deleteItemHandler,
-    onLogin: fetchItemFromBackend,
+    // onLogin: fetchItemFromBackend,
     editItems:editItems,
     editItem:editItemHandler
   };

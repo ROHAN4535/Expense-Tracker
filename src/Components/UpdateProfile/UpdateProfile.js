@@ -26,7 +26,8 @@ const UpdateProfile = (props) => {
           body: JSON.stringify({
             idToken: localStorage["user"],
             displayName: nameRef.current.value,
-            photoUrl: urlRef.current.value
+            photoUrl: urlRef.current.value,
+            returnSecureToken: true,
           }),
           headers: {
             "Content-Type": "application/json",
