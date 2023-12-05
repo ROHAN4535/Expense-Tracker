@@ -50,7 +50,7 @@ const UpdateProfile = (props) => {
     }
   };
   return (
-    <div>
+    <div className={classes.sec}>
       <header className={classes.header}>
         <p>Winners never quite, Quitters never win.</p>
       </header>

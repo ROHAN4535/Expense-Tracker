@@ -1,18 +1,19 @@
 import { Route, Routes } from "react-router-dom";
 import Login from "./Components/Login/Login";
 import SignUp from "./Components/SignUp/SignUp";
-// import UpdateProfile from "./Components/UpdateProfile/UpdateProfile";
-// import AuthProvider from "./Store/AuthProvider";
 import Profile from "./Components/UpdateProfile/Profile";
 import Expense from "./Components/ExpenseTracker/Expense";
-// import ExpeseProvider from "./Store/ExpeseProvider";
 import Root from "./Components/Layout/Root";
+import "./App.css";
+import { useSelector } from "react-redux";
 
 function App() {
+  const isLoggedIn = useSelector((state) => state.auth.token !== null);
+  const isDarkMode = useSelector((state) => state.theme.isDarkMode);
   return (
-    //<AuthProvider>
-    //  <ExpeseProvider>
-    <div>
+    <div
+      className={`App ${isLoggedIn && isDarkMode ? "darkTheme" : "lightTheme"}`}
+    >
       <Routes>
         <Route path="/" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
@@ -22,8 +23,6 @@ function App() {
         </Route>
       </Routes>
     </div>
-    // </ExpeseProvider>
-    // </AuthProvider>
   );
 }
 

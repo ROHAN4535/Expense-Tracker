@@ -5,10 +5,14 @@ import UpdateProfile from "./UpdateProfile";
 import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../../Store/auth-slice";
 import { expenseActions } from "../../Store/expense-slice";
+import { themeActions } from "../../Store/theme-slice";
+import { MdModeNight } from "react-icons/md";
+import { BsSunFill } from "react-icons/bs";
 
 const Profile = () => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
+  const isDarkMode = useSelector((state) => state.theme.isDark);
   const navigate = useNavigate();
   const location = useLocation();
   const isLocation = location.pathname === "/profile";
@@ -60,6 +64,9 @@ const Profile = () => {
 
   // Check if user data is already available in state, if not, fetch it.
   const logoutHandler = () => {
+    if (isDarkMode === true) {
+      dispatch(themeActions.toggleTheme());
+    }
     dispatch(authActions.logout());
     dispatch(expenseActions.setItemsEmpty());
     navigate("/login", { replace: true });
@@ -67,14 +74,32 @@ const Profile = () => {
   const clickExpenseHandler = () => {
     navigate("/profile/expensetracker", { replace: true });
   };
-
+  const clickModeHandler = async () => {
+    dispatch(themeActions.toggleTheme());
+  };
   return (
     <Fragment>
       <section className={classes.proCon}>
         <div className={classes.header}>
           <div className={classes.headerDetail}>
-            <h6>Welcome to Expense Tracker</h6>
-            <button onClick={clickExpenseHandler}>Expense Tracker</button>
+          <h6 style={{ color: "#fff" }}>Welcome to Expense Tracker</h6>
+            <button
+              className={classes.expenseBtn}
+              onClick={clickExpenseHandler}
+            >
+              Expense Tracker
+            </button>
+            <div className={classes.mode}>
+              {auth.isPremium && (
+                <button onClick={clickModeHandler}>
+                  {isDarkMode ? (
+                    <BsSunFill style={{ color: "white" }} />
+                  ) : (
+                    <MdModeNight />
+                  )}
+                </button>
+              )}
+            </div>
             <span className={classes.incomplete}>
               {/* <h5>Your profile is incomplete.</h5>
 
@@ -98,7 +123,9 @@ const Profile = () => {
           </div>
         </div>
       </section>
-      {isLocation && <UpdateProfile user={userData} update={fetchUserData} />}
+      <section className={classes.sectionLower}>
+        {isLocation && <UpdateProfile user={userData} update={fetchUserData} />}
+      </section>
     </Fragment>
   );
 };
